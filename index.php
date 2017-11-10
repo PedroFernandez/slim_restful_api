@@ -7,7 +7,15 @@ $app->get("/hello/:name", function ($name) {
     echo "Hello " . $name . '<br/>';
 });
 
-$app->get("/tests(/:one(/:two))", function ($one = null, $two = null) {
+function test_middle() {
+    echo 'I\'m a middleware' . '<br/>';
+}
+
+function test_middle2() {
+    echo 'I\'m another middleware :)' . '<br/>';
+}
+
+$app->get("/tests(/:one(/:two))", 'test_middle', 'test_middle2', function ($one = null, $two = null) {
    echo $one . '<br/>';
    echo $two . '<br/>';
 })->conditions([
