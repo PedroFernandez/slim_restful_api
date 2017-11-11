@@ -32,6 +32,11 @@ $app->group('/api', function () use($app) {
         $app->get('/tell-surname(/:surname)', function ($surname = null) {
             echo 'My surname is ' . $surname;
         });
+
+        $app->get('/me-llamo-Pedro', function () use($app) {
+            $app->redirect('/hello/Pedro');
+        });
+
     });
 });
 
