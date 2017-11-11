@@ -20,7 +20,19 @@ $app->get("/tests(/:one(/:two))", 'test_middle', 'test_middle2', function ($one 
    echo $two . '<br/>';
 })->conditions([
     "one" => "[a-zA-Z]*",
-    "two" => "[0-9]*"
+    "two" => "[a-zA-Z]*"
 ]);
+
+$app->group('/api', function () use($app) {
+    $app->group('/example', function () use($app) {
+        $app->get('/hello(/:name)', function ($name = null) {
+            echo 'My name is ' . $name;
+        });
+
+        $app->get('/tell-surname(/:surname)', function ($surname = null) {
+            echo 'My surname is ' . $surname;
+        });
+    });
+});
 
 $app->run();
