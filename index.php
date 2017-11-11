@@ -7,6 +7,8 @@ $app->get("/hello/:name", function ($name) {
     echo "Hello " . $name . '<br/>';
 });
 
+var_dump($app->request()->params('marta'));
+
 function test_middle() {
     echo 'I\'m a middleware' . '<br/>';
 }
@@ -26,7 +28,7 @@ $app->get("/tests(/:one(/:two))", 'test_middle', 'test_middle2', function ($one 
 $app->group('/api', function () use($app) {
     $app->group('/example', function () use($app) {
         $app->get('/hello(/:name)', function ($name = null) {
-            echo 'My name is ' . $name;
+            echo 'Hello Bro! My name is ' . $name;
         });
 
         $app->get('/tell-surname(/:surname)', function ($surname = null) {
@@ -34,7 +36,7 @@ $app->group('/api', function () use($app) {
         });
 
         $app->get('/me-llamo-Pedro', function () use($app) {
-            $app->redirect('/hello/Pedro');
+            $app->redirect('/api/example/hello/Pedro');
         });
 
     });
