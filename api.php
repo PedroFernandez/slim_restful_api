@@ -35,4 +35,23 @@ $app->post('/products', function () use($db, $app) {
     echo json_encode($result);
 });
 
+$app->put('/products/:id', function ($id) use($db, $app) {
+
+    $query = "UPDATE products SET "
+             ."name = '{$app->request->post("name")}',"
+             ."description = '{$app->request->post("description")}',"
+             ."price = '{$app->request->post("price")}'"
+             ."WHERE id = '{$id}' ";
+
+    $update = $db->query($query);
+
+    if ($update) {
+        $result = ['result' => true, 'message' => 'Product has been updated correctly'];
+    } else {
+        $result = ['result' => false, 'message' => 'Product has NOT been updated correctly'];
+    }
+
+    echo json_encode($result);
+});
+
 $app->run();
