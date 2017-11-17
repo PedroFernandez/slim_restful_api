@@ -59,12 +59,13 @@ $app->delete('/products/:id', function ($id) use($db, $app) {
 
     $delete = $db->query($query);
 
-    if ($delete) {
-        $result = ['result' => true, 'message' => 'Product has been deleted correctly'];
-    } else {
+    if(!$delete) {
         $result = ['result' => false, 'message' => 'Product has NOT been deleted correctly'];
+        echo json_encode($result);
+        exit;
     }
 
+    $result = ['result' => true, 'message' => 'Product has been deleted correctly'];
     echo json_encode($result);
 });
 
