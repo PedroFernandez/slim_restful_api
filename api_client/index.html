@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>API Rest Client</title>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <script>
+        JSON.parse = JSON.parse || function (str) {
+            if(str === "")
+                str = '""';
+            return eval("var p=" + str + ";");
+            // return p;
+        };
+
+        $(document).ready(function () {
+            function getProducts() {
+                $.ajax({
+                    url: "http://localhost:8080/api.php/products",
+                    type: "get",
+                    success: function (response) {
+                        $.each(JSON.parse(response), function (i, index) {
+                            if(index.id.length) {
+                                $(".table").append("<tr><td>" + index.id + "</td>" +
+                                    "<td>" + index.name + "</td>" +
+                                    "<td>" + index.description + "</td>" +
+                                    "<td>" + index.price + "</td>" +
+                                    "<td><span class='delete btn btn-danger' data-product='"+index.id+"'>Delete</span></td>" +
+                                    "<td><span class='delete btn btn-warning' data-product='"+index.id+"'>Edit</span></td>" +
+                                    "</tr>");
+                            }
+                        })
+                    }
+                });
+            }
+            getProducts();
+        });
+
+    </script>
+
+</head>
+<body>
+    <h3>API Rest Client</h3>
+
+    <div class="col-lg-7">
+        <table class="table">
+            <tr>
+                <td>ID</td>
+                <td>Name</td>
+                <td>Description</td>
+                <td>Price</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="col-lg-5">
+        <form action="http://api.php/products" method="post" data-product="0" >
+        Name
+        <input type="text" id="name_form" name="name" class="form-control"/><br/>
+
+        Description
+            <textarea id="description" name="description_form" class="form-control"></textarea><br/>
+
+        Price
+        <input type="text" id="name_form" name="name" class="form-control"><br/>
+
+        <input type="submit" value="Enviar" />
+        </form>
+    </div>
+
+</body>
+</html>
