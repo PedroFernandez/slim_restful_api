@@ -33,12 +33,27 @@
                                     "</tr>");
                             }
                         })
+
+                        //DELETE
+                        $(".delete").unbind("click").click(function () {
+                            $.ajax({
+                                url: "http://localhost:8080/api.php/products/"+$(this).data("product"),
+                                type: "delete",
+                                success: function (response) {
+                                    $(".table").html("<tr><td>ID</td><td>Name</td><td>Description</td><td>Price</td></tr>");
+                                    getProducts();
+                                    $("#product_form").attr("data-product", "0")
+                                    $("#product_form")[0].reset();
+                                }
+                            });
+                        })
                     }
                 });
             }
 
             getProducts();
 
+            // SAVE
             if ($("#product_form").data("product") === 0) {
                 $("#product_form").submit(function (e) {
                     e.preventDefault();
