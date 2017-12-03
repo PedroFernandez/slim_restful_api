@@ -23,22 +23,40 @@
                     type: "get",
                     success: function (response) {
                         $.each(JSON.parse(response), function (i, index) {
-                            if(index.id.length) {
+                            if (index.id.length) {
                                 $(".table").append("<tr><td>" + index.id + "</td>" +
                                     "<td>" + index.name + "</td>" +
                                     "<td>" + index.description + "</td>" +
                                     "<td>" + index.price + "</td>" +
-                                    "<td><span class='delete btn btn-danger' data-product='"+index.id+"'>Delete</span></td>" +
-                                    "<td><span class='delete btn btn-warning' data-product='"+index.id+"'>Edit</span></td>" +
+                                    "<td><span class='delete btn btn-danger' data-product='" + index.id + "'>Delete</span></td>" +
+                                    "<td><span class='delete btn btn-warning' data-product='" + index.id + "'>Edit</span></td>" +
                                     "</tr>");
                             }
                         })
                     }
                 });
             }
-            getProducts();
-        });
 
+            getProducts();
+
+            if ($("#product_form").data("product") === 0) {
+                $("#product_form").submit(function (e) {
+                    e.preventDefault();
+
+                    $.ajax({
+                        url: "http://localhost:8080/api.php/products",
+                        type: "post",
+                        data: {name: $("#name_form").val(), description: $("#description_form").val(), price: $("#price_form").val()},
+                        success: function (response) {
+                            $(".table").html("<tr><td>ID</td><td>Name</td><td>Description</td><td>Price</td></tr>");
+                            getProducts();
+                            $("#product_form")[0].reset();
+                        }
+                    });
+                    return false;
+                })
+            }
+        });
     </script>
 
 </head>
@@ -57,17 +75,18 @@
     </div>
 
     <div class="col-lg-5">
-        <form action="http://api.php/products" method="post" data-product="0" >
-        Name
-        <input type="text" id="name_form" name="name" class="form-control"/><br/>
+        <form id="product_form" action="http://localhost:8080/api.php/products" method="post" data-product="0">
 
-        Description
-            <textarea id="description" name="description_form" class="form-control"></textarea><br/>
+            Name
+            <input type="text" id="name_form" name="name" class="form-control"/><br/>
 
-        Price
-        <input type="text" id="name_form" name="name" class="form-control"><br/>
+            Description
+            <textarea id="description_form" name="description" class="form-control"></textarea><br/>
 
-        <input type="submit" value="Enviar" />
+            Price
+            <input type="text" id="price_form" name="price" class="form-control"><br/>
+
+            <input type="submit" value="Send"/>
         </form>
     </div>
 
